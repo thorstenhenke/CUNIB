@@ -13,7 +13,6 @@ import javax.swing.Timer;
 import model.*;
 
 import fragePanels.*;
-import fragePanels.wiederkehrende.*;
 
 public class FensterElemente {
 	
@@ -68,26 +67,26 @@ public class FensterElemente {
 		 * Fragenpanels
 		 */
 		fragen = new AbstractBtnPanel[Einstellungen.ANZAHLDERFRAGEN];
-		fragen[0] 	= new F_00_Inhalt					(0, -1, fenster);
-		fragen[1] 	= new F_01_Lernkontext				(1, 0, fenster);
-			fragen[2] 	= new F_02_wennIndividuell		(2, 1, fenster);
+		fragen[0] 	= new Inhalt(0, -1, fenster);
+		fragen[1] 	= new Lernkontext(1, 0, fenster);
+			fragen[2] 	= new Individuell(2, 1, fenster);
 				fragen[3] 	= new Interaktion			(3, 2, fenster);
 				fragen[4] 	= new Qualitaet				(4, 3, fenster);
-			fragen[5] 	= new F_05_wennGesamteKlasse	(5, 1, fenster);
+			fragen[5] 	= new GesamteKlasse(5, 1, fenster);
 				fragen[6] 	= new Interaktion			(6, 5, fenster);
 				fragen[7] 	= new Qualitaet				(7, 6, fenster);
-			fragen[8] 	= new F_08_wennPartnerarbeit	(8, 1, fenster);
-				fragen[9] 	= new F_09_wennKindGeleitet	(9, 8, fenster);
+			fragen[8] 	= new Partnerarbeit(8, 1, fenster);
+				fragen[9] 	= new KindGeleitet(9, 8, fenster);
 					fragen[10] 	= new Interaktion		(10, 9, fenster);
 					fragen[11] 	= new Qualitaet			(11, 10, fenster);
-				fragen[12] 	= new F_12_wennL1Geleitet	(12, 8, fenster);
+				fragen[12] 	= new L1Geleitet(12, 8, fenster);
 					fragen[13] 	= new Interaktion		(13, 12, fenster);
 					fragen[14] 	= new Qualitaet			(14, 13, fenster);
-				fragen[15] 	= new F_15_wennL2Geleitet	(15, 8, fenster);
+				fragen[15] 	= new L2Geleitet(15, 8, fenster);
 					fragen[16] 	= new Interaktion		(16, 15, fenster);
 					fragen[17] 	= new Qualitaet			(17, 16, fenster);
-			fragen[18]  = new F_18_GruppeAnzahl			(18, 1, fenster); 
-			fragen[19] 	= new F_19_wennGruppenarbeit	(19, 1, fenster);
+			fragen[18]  = new GruppeAnzahl(18, 1, fenster);
+			fragen[19] 	= new Gruppenarbeit(19, 1, fenster);
 				fragen[20] 	= new F_20_wennKindGeleitet	(20, 19, fenster);
 					fragen[21] 	= new Interaktion		(21, 20, fenster);
 					fragen[22] 	= new Qualitaet			(22, 21, fenster);
@@ -165,7 +164,7 @@ public class FensterElemente {
 		schuelerCode.setForeground(Color.BLACK);
 		schuelerCode.setHorizontalAlignment(JLabel.CENTER);
 		
-		zurueck = new JButton("Zurück");
+		zurueck = new JButton("Zurï¿½ck");
 		zurueck.setBounds(20, 500, 100, 30);
 		zurueck.setActionCommand("zurueck");
 		zurueck.setVisible(false);
