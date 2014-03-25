@@ -1,17 +1,13 @@
-package fragePanels;
-
-import java.awt.Font;
-import java.awt.event.ActionEvent;
+package panels;
 
 import javax.swing.JButton;
-import javax.swing.JLabel;
 
 import main.Fenster;
 
-public class Individuell extends AbstractBtnPanel {
+public class Individuell extends AbstractFragePanel {
 
-	public Individuell(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public Individuell(Fenster fenster) {
+		super(fenster);
 	}
 
 	public void bauePanel() {
@@ -63,44 +59,5 @@ public class Individuell extends AbstractBtnPanel {
 		akk.addActionListener(this);
 		add(akk);
 
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("allein")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.letzteFrageWeiterschalten();	
-		}
-		if(e.getActionCommand().equals("kzul1")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);
-		}
-		if(e.getActionCommand().equals("kzul2")){
-			setAntwort(2);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);			
-		}
-		if(e.getActionCommand().equals("kak")){
-			setAntwort(3);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);	
-		}
-		if(e.getActionCommand().equals("l1zuk")){
-			setAntwort(4);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);			
-		}
-		if(e.getActionCommand().equals("l2zuk")){
-			setAntwort(5);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);			
-		}
-		if(e.getActionCommand().equals("akk")){
-			setAntwort(6);
-			this.setVisible(false);
-			fenster.naechsteFrage(3);			
-		}	
 	}
 }

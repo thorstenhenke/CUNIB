@@ -1,20 +1,17 @@
-package fragePanels;
-
-import java.awt.event.ActionEvent;
+package panels;
 
 import javax.swing.JButton;
 
 import main.Fenster;
-import fragePanels.AbstractBtnPanel;
 
-public class Interaktion extends AbstractBtnPanel {
+public class Interaktion extends AbstractFragePanel {
 
 	private JButton btnGesamteKlasse;
 	private JButton btnGruppenarbeit;
 
-	
-	public Interaktion(int frageID, int vorgaenger,Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+
+	public Interaktion(Fenster fenster) {
+		super(fenster);
 	}
 
 	/**
@@ -35,19 +32,5 @@ public class Interaktion extends AbstractBtnPanel {
 		btnGruppenarbeit.addActionListener(this);
 		add(btnGruppenarbeit);
 
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals( "Interaktion lang")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.naechsteFrage(frageID + 1 );	
-		}
-		if(e.getActionCommand().equals("Interaktion kurz")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage( frageID + 1 );	
-		}		
 	}
 }

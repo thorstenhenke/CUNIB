@@ -1,22 +1,25 @@
-package main;
+package panels;
+
+import main.Fenster;
+import main.ObservationManager;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JLabel;
 
-public class WartePanel extends Abstract_AllgemeinesPanel {
+public class WartePanel extends AbstractCustomPanel {
 
-	private Fenster fenster;
-	private JLabel anweisungsText; 
-	private JLabel zeit; 
-		
-	public WartePanel(Fenster fenster) {
-		this.fenster = fenster;
-		
+	private JLabel zeit;
+    private ObservationManager observationManager;
+
+    public WartePanel(ObservationManager observationManager) {
+      this.observationManager = observationManager;
+    }
+
+    void bauePanel() {
 		setLayout(null);
 		
-		anweisungsText = new JLabel("Bitte warten..."); 
+		JLabel anweisungsText = new JLabel("Bitte warten...");
 		anweisungsText.setBounds(250, 100, 300, 80);
 		anweisungsText.setFont(new Font("Tahoma", Font.BOLD, 17));
 		anweisungsText.setVisible(true);
@@ -32,12 +35,5 @@ public class WartePanel extends Abstract_AllgemeinesPanel {
 	public void updateTime(int sekunden){
 		zeit.setText("" + sekunden);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {	}
-	
-
-	
-
 }
 

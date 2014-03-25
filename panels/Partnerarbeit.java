@@ -1,16 +1,14 @@
-package fragePanels;
-
-import java.awt.event.ActionEvent;
+package panels;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import main.Fenster;
 
-public class Partnerarbeit extends AbstractBtnPanel {
+public class Partnerarbeit extends AbstractFragePanel {
 	
-	public Partnerarbeit(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public Partnerarbeit(Fenster fenster) {
+		super(fenster);
 	}
 	private JTextField textField;
 
@@ -37,24 +35,5 @@ public class Partnerarbeit extends AbstractBtnPanel {
 		btnLGeleitet.setActionCommand("L2 geleitet");
 		btnLGeleitet.addActionListener(this);
 		add(btnLGeleitet);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("Kind geleitet")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.naechsteFrage(9);			
-		}
-		if(e.getActionCommand().equals("L1 geleitet")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage(12);			
-		}
-		if(e.getActionCommand().equals("L2 geleitet")){
-			setAntwort(2);
-			this.setVisible(false);
-			fenster.naechsteFrage(15);			
-		}
 	}
 }

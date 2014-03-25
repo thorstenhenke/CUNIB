@@ -1,15 +1,13 @@
-package fragePanels;
-
-import java.awt.event.ActionEvent;
+package panels;
 
 import javax.swing.JButton;
 
 import main.Fenster;
 
-public class KindGeleitet extends AbstractBtnPanel {
+public class KindGeleitet extends AbstractFragePanel {
 
-	public KindGeleitet(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public KindGeleitet(Fenster fenster) {
+		super(fenster);
 	}
 
 	/**
@@ -17,7 +15,6 @@ public class KindGeleitet extends AbstractBtnPanel {
 	 */
 	public void bauePanel() {
 		setLayout(null);
-		
 
 		JButton allein = new JButton("K allein");
 		allein.setBounds(250, 20, 200, 50);
@@ -43,32 +40,6 @@ public class KindGeleitet extends AbstractBtnPanel {
 		akk.addActionListener(this);
 		add(akk);
 
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("kak")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.naechsteFrage(10);
-		}
-		if(e.getActionCommand().equals("akk")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage(10);
-		}		
-		if(e.getActionCommand().equals("knonak")){
-			setAntwort(2);
-			this.setVisible(false);
-			fenster.letzteFrageWeiterschalten();			
-		}
-		if(e.getActionCommand().equals("allein")){
-			setAntwort(3);
-			this.setVisible(false);
-			fenster.letzteFrageWeiterschalten();			
-		}
-
-		
 	}
 
 }

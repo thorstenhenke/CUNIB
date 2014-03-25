@@ -1,18 +1,17 @@
-package fragePanels;
+package panels;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.Fenster;
 
-public class Inhalt extends AbstractBtnPanel {
+public class Inhalt extends AbstractFragePanel {
 
-	public Inhalt(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public Inhalt(Fenster fenster) {
+		super(fenster);
 	}
 
 	/**
@@ -47,19 +46,4 @@ public class Inhalt extends AbstractBtnPanel {
 		add(btnGruppenarbeit);
 
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("aufgabenbezogen")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.naechsteFrage(1);
-		}
-		if(e.getActionCommand().equals("nicht aufgabenbezogen")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage(1);
-		}
-	}
-
 }

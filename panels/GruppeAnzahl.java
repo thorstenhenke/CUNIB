@@ -1,20 +1,18 @@
-package fragePanels;
+package panels;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import main.Fenster;
 
-public class GruppeAnzahl extends AbstractBtnPanel {
+public class GruppeAnzahl extends AbstractFragePanel {
 	
-	public GruppeAnzahl(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public GruppeAnzahl(Fenster fenster) {
+		super(fenster);
 	}
 	private JTextField textField;
 
@@ -32,7 +30,7 @@ public class GruppeAnzahl extends AbstractBtnPanel {
 		add(textField);
 		
 		JButton btnLSprichtMit = new JButton("Weiter");
-		btnLSprichtMit.setActionCommand("weiter");
+		btnLSprichtMit.setActionCommand("*");
 		btnLSprichtMit.addActionListener(this);
 		btnLSprichtMit.setBounds(250, 350, 200, 50);
 		add(btnLSprichtMit);
@@ -45,25 +43,19 @@ public class GruppeAnzahl extends AbstractBtnPanel {
 		return false;
 	}
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("*")) {
+            fenster.naechsteFrage(textField.getText());
+        }
+    }
+
 	@Override
 	public void setVisible(boolean visible){
 		super.setVisible(visible);
 		if (visible){
 			textField.setText("");
 			textField.requestFocusInWindow();
-		}
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("weiter")){
-			if (noValidInput()){
-				textField.setBorder(BorderFactory.createLineBorder(Color.red, 4));
-			} else {
-				setAntwort(Integer.parseInt(textField.getText()));
-				this.setVisible(false);
-				fenster.naechsteFrage(19);				
-			}
 		}
 	}
 }

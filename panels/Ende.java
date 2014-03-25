@@ -1,4 +1,4 @@
-package main;
+package panels;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,22 +7,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-import model.Speichern;
+import main.Fenster;
+import main.SessionManager;
 
 @SuppressWarnings("serial")
-public class EndeUndSpeichern extends Abstract_AllgemeinesPanel {
+public class Ende extends AbstractCustomPanel implements ActionListener{
 
-	private Fenster fenster;
-	private JButton beenden;
-	
-	public EndeUndSpeichern(Fenster fenster){
-		
+    private SessionManager session;
+
+	public Ende(SessionManager session) {
+        super();
+        this.session = session;
+    }
+
+    @Override
+	void bauePanel() {
 		this.setLayout(null);
-		
-		this.fenster 	= fenster;
-		
+
 		JLabel frage = new JLabel("Ende des Fragebogens.");
 		frage.setFont(new Font("Tahoma", Font.BOLD, 17));
 		frage.setForeground(Color.RED);
@@ -30,7 +32,7 @@ public class EndeUndSpeichern extends Abstract_AllgemeinesPanel {
 		frage.setHorizontalAlignment(JLabel.CENTER);
 		this.add(frage);
 
-		beenden = new JButton("Beenden");
+		JButton beenden = new JButton("Beenden");
 		beenden.setBounds(250, 300, 200, 80);
 		beenden.setActionCommand("beenden");
 		beenden.addActionListener(this);
@@ -40,7 +42,6 @@ public class EndeUndSpeichern extends Abstract_AllgemeinesPanel {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("beenden")){
-			Speichern.Speichern(fenster.fensterElemente.sitzung);
 			System.exit(0);
 		}
 	}				

@@ -1,4 +1,7 @@
-package main;
+package panels;
+
+import main.Fenster;
+import main.SessionManager;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -6,24 +9,27 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
-public class Helmke extends Abstract_AllgemeinesPanel {
+public class Helmke extends AbstractCustomPanel implements ActionListener{
 
-	private JLabel schuelerBesonderheite;
-	private Fenster fenster;
+    private SessionManager session;
 
-	public Helmke(Fenster fenster) {
-		this.fenster = fenster;
-		
+	public Helmke(SessionManager session) {
+        super();
+        this.session = session;
+    }
+
+    @Override
+    void bauePanel() {
+
 		setLayout(null);
-		schuelerBesonderheite = new JLabel(
+		JLabel schuelerBesonderheite = new JLabel(
 				"<html><body><center>" +
-				"Der erste Durchgang der Schülerbeobachtung ist <br>" +
+				"Der erste Durchgang der SchÃ¼lerbeobachtung ist <br>" +
 				"abgeschlossen. Rufe nun das Programm zur <br>" +
-				"allgemeinen Unterrichtsqualität auf." +
+				"allgemeinen UnterrichtsqualitÃ¤t auf." +
 				"</center></body></html>"
-						);
+		);
 		schuelerBesonderheite.setFont(new Font("Tahoma", Font.BOLD, 17));
 		schuelerBesonderheite.setBounds(130, 30, 500, 100);
 		this.add(schuelerBesonderheite);
@@ -38,8 +44,6 @@ public class Helmke extends Abstract_AllgemeinesPanel {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().endsWith("weiter")){
-			fenster.weiterschalten();		
 		}
 	}
-
 }

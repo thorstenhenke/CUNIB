@@ -1,24 +1,22 @@
-package fragePanels;
+package panels;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.Fenster;
 
-public class Lernkontext extends AbstractBtnPanel {
+public class Lernkontext extends AbstractFragePanel {
 
-	public Lernkontext(int frageID, int vorgaenger, Fenster fenster) {
-		super(frageID, vorgaenger, fenster);
+	public Lernkontext(Fenster fenster) {
+		super(fenster);
 	}
 
 	
 	@Override
 	public void bauePanel() {
-		
-		
+
 		setLayout(null);
 		
 		JLabel lblLernkontext = new JLabel("Lernkontext...");
@@ -52,30 +50,4 @@ public class Lernkontext extends AbstractBtnPanel {
 		add(btnGruppenarbeit);
 
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getActionCommand().equals("individuell")){
-			setAntwort(0);
-			this.setVisible(false);
-			fenster.naechsteFrage(2);
-		}
-		if(e.getActionCommand().equals("gesamte Klasse")){
-			setAntwort(1);
-			this.setVisible(false);
-			fenster.naechsteFrage(5);
-		}
-		if(e.getActionCommand().equals("Partnerarbeit")){
-			setAntwort(2);
-			this.setVisible(false);
-			fenster.naechsteFrage(8);			
-		}
-		if(e.getActionCommand().equals("Gruppenarbeit")){
-			setAntwort(3);
-			this.setVisible(false);
-			fenster.naechsteFrage(18);			
-		}
-	}
-
 }
