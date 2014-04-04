@@ -3,114 +3,152 @@ package main;
 
 import model.DecisionGraph;
 import model.Einstellungen;
-import model.Schueler;
+import model.SchuelerModel;
 import panels.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 import java.util.TimerTask;
 
-public class ObservationManager implements ActionListener{
+public class ObservationManager implements ActionListener {
 
-    SessionManager sessionManager;
-    DecisionGraph decisionManager;
-    Fenster fenster;
+    private SessionManager sessionManager;
+    private DecisionGraph decisionManager;
+    private Fenster fenster;
+    private java.util.Timer timer;
+
+    javax.swing.Timer t;
 
     // Panel
-    AusgewaehlterSchueler schuelerPanel;
-    BeobPanel beobachtPanel;
-    WartePanel wartePanel;
+    private AusgewaehlterSchueler schuelerPanel;
+    private BeobPanel beobachtPanel;
+    private WartePanel wartePanel;
 
     // Statevariablen
-    Schueler aktuellerSchueler;
-    int zeit;
-    Timer timer;
+    private SchuelerModel aktuellerSchuelerModell;
+    private volatile int zeit;
+    private int intervalle;
 
-    public ObservationManager(Fenster fenster, SessionManager sessionManager) {
-        this.fenster = fenster;
+    public ObservationManager(Fenster f, SessionManager sessionManager) {
+        // TODO callbacks ggf durch interne Zustände abfangen
+
+        this.fenster = f;
         this.sessionManager = sessionManager;
         this.decisionManager = initializeDecisionManager(new DecisionGraph());
-        this.timer = new Timer();
+
+        // Zurueck
+        fenster.zurueck.setActionCommand("Fenster::Zurueck");
+        fenster.zurueck.addActionListener(this);
+
+        // Panel
+        schuelerPanel = new AusgewaehlterSchueler(this);
+        beobachtPanel = new BeobPanel();
+        wartePanel = new WartePanel(this);
+
+        this.timer = new java.util.Timer();
+
+        //Diverse Timer :)
+        t = new javax.swing.Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fenster.updateSekunden(zeit);
+                beobachtPanel.updateTime(zeit);
+                wartePanel.updateTime(zeit);
+                if (zeit < 1) {
+                    zeit = 0; // ????
+                    t.stop();
+                    trageein();
+                } else {
+                    zeit--;
+                }
+
+            }
+        });
+        t.setInitialDelay(0);
     }
 
-    void neueBeobachtung() {
+    void starteMakrozyklus() {
         if (sessionManager.session.hasMoreSchueler()) {
-            aktuellerSchueler = sessionManager.session.ziehe();
-            fenster.setSchuelerCode(aktuellerSchueler.schuelercode);
-            fenster.setSchuelerBesonderheiten(aktuellerSchueler.besondereMerkmale);
-            schuelerPanel.updateSchuelerDaten(aktuellerSchueler);
+            aktuellerSchuelerModell = sessionManager.session.ziehe();
+            fenster.updateSchuelerDaten(aktuellerSchuelerModell);
+            fenster.updateSchuelerAnzahl(sessionManager.session.anzahlGetesteterSchueler(), sessionManager.session.arrschueler.length);
+            schuelerPanel.updateSchuelerDaten(aktuellerSchuelerModell);
             fenster.showPanel(schuelerPanel);
         } else {
-            // steige aus | callback
-            sessionManager.zyklusAbgeschlossen();
+            sessionManager.zyklusAbgeschlossen(); // callback
         }
     }
 
-    void starteZyklus() {
-        zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
-        TimerTask countdown = new TimerTask() {
-            @Override
-            public void run() {
-                if (zeit == 0) {
-                    this.cancel();
-                } else {
-                    // notify
-                    zeit--;
-                }
-            }
-        };
-        timer.schedule(countdown, 0, 1000);
-        beobachte();
+    void starteMiniZyklus() {
+        if (intervalle < Einstellungen.MIKROZYKLUS) {
+            intervalle++;
+            zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
+            // reset()
+            t.restart();
+            // TODO ggf liegt hier das Problem mit dem Timer
+            beobachte();
+        } else {
+            starteMakrozyklus(); // callback
+        }
     }
 
     void beobachte() {
-        // panel
         TimerTask beobachteTask = new TimerTask() {
             @Override
             public void run() {
-                eintragen();
+                trageein();
                 this.cancel();
             }
         };
         timer.schedule(beobachteTask, Einstellungen.LAENGEBEOBACHTUNG * 1000);
+        fenster.updateSchuelerdurchlauf(intervalle);
+        decisionManager.reset();
+        fenster.showPanel(beobachtPanel);
     }
 
-    void eintragen() {
-        AbstractFragePanel actualPanel = decisionManager.actualState().panel;
+    void trageein() {
+        AbstractCustomPanel actualPanel = decisionManager.actualState().panel;
         if (actualPanel == null) {
-            if (zeit > 0) {
-
-            } else {
-                
+            fenster.zurueck.setVisible(false);
+            if (zeit == 0) {
+                aktuellerSchuelerModell.addBeobachtung(decisionManager.getHistory());
+                decisionManager.resetHistory();
+                starteMiniZyklus(); // callback
+            } else { // zeit > 0
+                fenster.showPanel(wartePanel);
             }
         } else {
-
+            fenster.zurueck.setVisible(true);
+            fenster.showPanel(actualPanel);
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("starteBeobachtung")){
-            starteZyklus();
+        if (e.getActionCommand().equals("AusgewaehlterSchueler::Weiter")) {
+            intervalle = 0;
+            starteMiniZyklus();
+        } else if (e.getActionCommand().equals("Fenster::Zurueck")) {
+            decisionManager.rollback();
+            trageein();
         } else {
             decisionManager.next(e.getActionCommand());
-            // alternative zum direkten Aufruf durch die Panel
+            trageein();
         }
     }
 
-    private DecisionGraph initializeDecisionManager(DecisionGraph decisionManager){
-        AbstractFragePanel inhalt         = new Inhalt(fenster);
-        AbstractFragePanel lernkontext    = new Lernkontext(fenster);
-        AbstractFragePanel individuell    = new Individuell(fenster);
-        AbstractFragePanel gesamteKlasse  = new GesamteKlasse(fenster);
-        AbstractFragePanel partnerarbeit  = new Partnerarbeit(fenster);
-        AbstractFragePanel gruppenArbeit  = new Gruppenarbeit(fenster);
-        AbstractFragePanel gruppeAnzahl   = new GruppeAnzahl(fenster);
-        AbstractFragePanel kindGeleitet   = new KindGeleitet(fenster);
-        AbstractFragePanel lehrerGeleitet = new LehrerGeleitet(fenster);
-        AbstractFragePanel interaktion    = new Interaktion(fenster);
-        AbstractFragePanel qualitaet      = new Qualitaet(fenster);
+    private DecisionGraph initializeDecisionManager(DecisionGraph decisionManager) {
+        AbstractCustomPanel inhalt = new Inhalt(this);
+        AbstractCustomPanel lernkontext = new Lernkontext(this);
+        AbstractCustomPanel individuell = new Individuell(this);
+        AbstractCustomPanel gesamteKlasse = new GesamteKlasse(this);
+        AbstractCustomPanel partnerarbeit = new Partnerarbeit(this);
+        AbstractCustomPanel gruppenArbeit = new Gruppenarbeit(this);
+        AbstractCustomPanel gruppeAnzahl = new GruppeAnzahl(this);
+        AbstractCustomPanel kindGeleitet = new KindGeleitet(this);
+        AbstractCustomPanel lehrerGeleitet = new LehrerGeleitet(this);
+        AbstractCustomPanel interaktion = new Interaktion(this);
+        AbstractCustomPanel qualitaet = new Qualitaet(this);
 
         decisionManager.addRelation(inhalt, "auf", lernkontext);
         decisionManager.addRelation(inhalt, "nau", lernkontext);
@@ -152,6 +190,7 @@ public class ObservationManager implements ActionListener{
         decisionManager.addRelation(kindGeleitet, "kak", interaktion);
         decisionManager.addRelation(kindGeleitet, "akk", interaktion);
 
+        //##
         decisionManager.addRelation(lehrerGeleitet, "all", null);
         decisionManager.addRelation(lehrerGeleitet, "tei", null);
         decisionManager.addRelation(lehrerGeleitet, "non", null);
@@ -167,7 +206,9 @@ public class ObservationManager implements ActionListener{
         decisionManager.addRelation(qualitaet, "hoc", null);
         decisionManager.addRelation(qualitaet, "nor", null);
 
+        // TODO Unschoen! Besser nach oben
         decisionManager.setAsStart(inhalt);
+
         return decisionManager;
     }
 

@@ -7,17 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class Inhalt extends AbstractFragePanel {
+public class Inhalt extends AbstractCustomPanel {
 
-	public Inhalt(Fenster fenster) {
-		super(fenster);
-	}
+	public Inhalt(ObservationManager m) {
 
-	/**
-	 * Create the panel.
-	 */
-	public void bauePanel() {
 		setLayout(null);
 		
 		JLabel warnhinweis = new JLabel("Erste Frage ! ");
@@ -35,15 +30,14 @@ public class Inhalt extends AbstractFragePanel {
 		
 		JButton btnGesamteKlasse = new JButton("aufgabenbezogen");
 		btnGesamteKlasse.setBounds(250, 170, 200, 59);
-		btnGesamteKlasse.setActionCommand("aufgabenbezogen");
-		btnGesamteKlasse.addActionListener(this);
+		btnGesamteKlasse.setActionCommand("auf");
+		btnGesamteKlasse.addActionListener(m);
 		add(btnGesamteKlasse);
 		
 		JButton btnGruppenarbeit = new JButton("nicht aufgabenbezogen");
 		btnGruppenarbeit.setBounds(250, 290, 200, 59);
-		btnGruppenarbeit.setActionCommand("nicht aufgabenbezogen");
-		btnGruppenarbeit.addActionListener(this);
+		btnGruppenarbeit.setActionCommand("nau");
+		btnGruppenarbeit.addActionListener(m);
 		add(btnGruppenarbeit);
-
 	}
 }

@@ -1,16 +1,18 @@
 package model;
 
-import panels.AbstractFragePanel;
+import panels.AbstractCustomPanel;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class GraphNode {
+public class GraphNode implements Serializable{
     HashMap<String, GraphNode> predecessors;
     HashMap<String, GraphNode> successors;
 
-    public final AbstractFragePanel panel;
+    public final AbstractCustomPanel panel;
     Boolean isstarred = false;
 
-    GraphNode(AbstractFragePanel panel) {
+    GraphNode(AbstractCustomPanel panel) {
         this.predecessors = new HashMap<String, GraphNode>();
         this.successors = new HashMap<String, GraphNode>();
         this.panel = panel;
@@ -32,10 +34,6 @@ public class GraphNode {
             return null;
         }
         return successors.get(transition);
-    }
-
-    public Boolean isLeaf(){
-        return successors.isEmpty();
     }
 
     @Override

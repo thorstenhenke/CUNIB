@@ -16,17 +16,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
-import main.Fenster;
 import main.InputConversion;
 import main.InputValidator;
 import main.SessionManager;
-import model.Beobachtungseinheit;
+import model.SchuelerModel;
+import model.SessionModel;
 import model.Einstellungen;
-import model.Schueler;
 
-public class StartPanel extends AbstractCustomPanel {
-
-	private Fenster fenster;
+public class StartPanel extends AbstractCustomPanel implements ActionListener {
 
 	private JTextField klnr;
     private ButtonGroup bstunde;
@@ -45,16 +42,8 @@ public class StartPanel extends AbstractCustomPanel {
 
 	private JButton btnStart;
 
-    private SessionManager sessionManager;
 
     public StartPanel(SessionManager sessionManager) {
-        super();
-        this.sessionManager = sessionManager;
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	void bauePanel(){
-		
 		this.setLayout(null);
 		
 		JLabel lblKlassencode = new JLabel("Klassencode");
@@ -193,7 +182,7 @@ public class StartPanel extends AbstractCustomPanel {
 
 		btnStart = new JButton("Weiter");
 		btnStart.setBounds(250, 400, 200, 50);
-	    btnStart.setActionCommand("starteSession");
+        btnStart.setActionCommand("StartPanel::Weiter");
 	    btnStart.addActionListener(sessionManager);
 		this.add(btnStart);	
 	}
@@ -205,19 +194,24 @@ public class StartPanel extends AbstractCustomPanel {
                 new String[]{scodeST.getText(), scodeM.getText(), scodeSW.getText(), scodeI.getText()});
     }
 
-    public Beobachtungseinheit getSessionInfos() {
-        LinkedList<Schueler> schueler = new LinkedList<Schueler>();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        System.out.println("Muh" + e.getActionCommand());
+    }
+
+    public SessionModel getSessionInfos() {
+        LinkedList<SchuelerModel> schuelerModell = new LinkedList<SchuelerModel>();
         if (!scodeST.getText().equals(""))
-            schueler.add(new Schueler(scodeST.getText(), "stark", besST.getText()));
+            schuelerModell.add(new SchuelerModel(scodeST.getText(), "stark", besST.getText()));
         if (!scodeM.getText().equals(""))
-            schueler.add(new Schueler(scodeM.getText(), "mittel", besM.getText()));
+            schuelerModell.add(new SchuelerModel(scodeM.getText(), "mittel", besM.getText()));
         if (!scodeSW.getText().equals(""))
-            schueler.add(new Schueler(scodeSW.getText(), "schwach", besSW.getText()));
+            schuelerModell.add(new SchuelerModel(scodeSW.getText(), "schwach", besSW.getText()));
         if (!scodeI.getText().equals(""))
-            schueler.add(new Schueler(scodeI.getText(), "inkl", besI.getText()));
-        return new Beobachtungseinheit(klnr.getText(), (String) beobachter.getSelectedItem(),
+            schuelerModell.add(new SchuelerModel(scodeI.getText(), "inkl", besI.getText()));
+        return new SessionModel(klnr.getText(), (String) beobachter.getSelectedItem(),
                 InputConversion.getSelectedItem(bstunde), InputConversion.getSelectedItem(fach),
-                (String) sstunde.getSelectedItem(), schueler);
+                (String) sstunde.getSelectedItem(), schuelerModell);
     }
 
     public void alert(){

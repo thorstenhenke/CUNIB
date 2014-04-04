@@ -6,16 +6,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class Lernkontext extends AbstractFragePanel {
+public class Lernkontext extends AbstractCustomPanel {
 
-	public Lernkontext(Fenster fenster) {
-		super(fenster);
-	}
-
-	
-	@Override
-	public void bauePanel() {
+	public Lernkontext(ObservationManager m) {
 
 		setLayout(null);
 		
@@ -27,26 +22,26 @@ public class Lernkontext extends AbstractFragePanel {
 		
 		JButton btnIndividuell = new JButton("individuell");
 		btnIndividuell.setBounds(250, 80, 200, 60);
-		btnIndividuell.setActionCommand("individuell");
-		btnIndividuell.addActionListener(this);
+		btnIndividuell.setActionCommand("ind");
+		btnIndividuell.addActionListener(m);
 		add(btnIndividuell);
 
 		JButton btnGesamteKlasse = new JButton("gesamte Klasse");
 		btnGesamteKlasse.setBounds(250, 170, 200, 60);
-		btnGesamteKlasse.setActionCommand("gesamte Klasse");
-		btnGesamteKlasse.addActionListener(this);
+		btnGesamteKlasse.setActionCommand("ges");
+		btnGesamteKlasse.addActionListener(m);
 		add(btnGesamteKlasse);
 		
 		JButton btnPartner = new JButton("Partnerarbeit");
 		btnPartner.setBounds(250, 260, 200, 60);
-		btnPartner.setActionCommand("Partnerarbeit");
-		btnPartner.addActionListener(this);
+		btnPartner.setActionCommand("par");
+		btnPartner.addActionListener(m);
 		add(btnPartner);
 		
 		JButton btnGruppenarbeit = new JButton("Gruppenarbeit");
 		btnGruppenarbeit.setBounds(250, 350, 200, 60);
-		btnGruppenarbeit.setActionCommand("Gruppenarbeit");
-		btnGruppenarbeit.addActionListener(this);
+		btnGruppenarbeit.setActionCommand("gru");
+		btnGruppenarbeit.addActionListener(m);
 		add(btnGruppenarbeit);
 
 	}

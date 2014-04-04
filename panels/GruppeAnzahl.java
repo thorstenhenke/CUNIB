@@ -8,15 +8,13 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class GruppeAnzahl extends AbstractFragePanel {
-	
-	public GruppeAnzahl(Fenster fenster) {
-		super(fenster);
-	}
-	private JTextField textField;
+public class GruppeAnzahl extends AbstractCustomPanel {
 
-	public void bauePanel() {
+    private JTextField textField;
+
+    public GruppeAnzahl(ObservationManager m) {
 		setLayout(null);
 		
 		JLabel lblAnzahlDerKinder = new JLabel("Anzahl der Kinder");
@@ -31,7 +29,7 @@ public class GruppeAnzahl extends AbstractFragePanel {
 		
 		JButton btnLSprichtMit = new JButton("Weiter");
 		btnLSprichtMit.setActionCommand("*");
-		btnLSprichtMit.addActionListener(this);
+		btnLSprichtMit.addActionListener(m);
 		btnLSprichtMit.setBounds(250, 350, 200, 50);
 		add(btnLSprichtMit);
 	}
@@ -41,21 +39,5 @@ public class GruppeAnzahl extends AbstractFragePanel {
 			return true; 
 		}
 		return false;
-	}
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("*")) {
-            fenster.naechsteFrage(textField.getText());
-        }
-    }
-
-	@Override
-	public void setVisible(boolean visible){
-		super.setVisible(visible);
-		if (visible){
-			textField.setText("");
-			textField.requestFocusInWindow();
-		}
 	}
 }

@@ -10,13 +10,8 @@ import javax.swing.JLabel;
 public class WartePanel extends AbstractCustomPanel {
 
 	private JLabel zeit;
-    private ObservationManager observationManager;
 
     public WartePanel(ObservationManager observationManager) {
-      this.observationManager = observationManager;
-    }
-
-    void bauePanel() {
 		setLayout(null);
 		
 		JLabel anweisungsText = new JLabel("Bitte warten...");

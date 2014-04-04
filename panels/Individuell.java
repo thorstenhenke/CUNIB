@@ -3,38 +3,35 @@ package panels;
 import javax.swing.JButton;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class Individuell extends AbstractFragePanel {
+public class Individuell extends AbstractCustomPanel {
 
-	public Individuell(Fenster fenster) {
-		super(fenster);
-	}
-
-	public void bauePanel() {
+	public Individuell(ObservationManager m) {
 		setLayout(null);
 		
 		JButton btnGesamteKlasse = new JButton("K allein");
 		btnGesamteKlasse.setBounds(250, 40, 200, 40);
-		btnGesamteKlasse.setActionCommand("allein");
-		btnGesamteKlasse.addActionListener(this);
+		btnGesamteKlasse.setActionCommand("all");
+		btnGesamteKlasse.addActionListener(m);
 		add(btnGesamteKlasse);
 
 		JButton btnGruppenarbeit = new JButton("K spricht zu L1");
-		btnGruppenarbeit.setActionCommand("kzul1");
-		btnGruppenarbeit.addActionListener(this);
+		btnGruppenarbeit.setActionCommand("kl1");
+		btnGruppenarbeit.addActionListener(m);
 		btnGruppenarbeit.setBounds(100, 130, 200, 40);
 		add(btnGruppenarbeit);
 
 		JButton btnKSprichtMit = new JButton("K spricht zu L2");
-		btnKSprichtMit.setActionCommand("kzul2");
-		btnKSprichtMit.addActionListener(this);
+		btnKSprichtMit.setActionCommand("kl2");
+		btnKSprichtMit.addActionListener(m);
 		btnKSprichtMit.setBounds(100, 220, 200, 40);
 		add(btnKSprichtMit);
 
 		JButton kak = new JButton("K spricht zu aK");
 		kak.setBounds(100, 310, 200, 40);
 		kak.setActionCommand("kak");
-		kak.addActionListener(this);
+		kak.addActionListener(m);
 		add(kak);
 
 		/**
@@ -43,20 +40,20 @@ public class Individuell extends AbstractFragePanel {
 
 		JButton btnLSprichtMit_1 = new JButton("L1 spricht zu K");
 		btnLSprichtMit_1.setBounds(400, 130, 200, 40);
-		btnLSprichtMit_1.setActionCommand("l1zuk");
-		btnLSprichtMit_1.addActionListener(this);
+		btnLSprichtMit_1.setActionCommand("l1k");
+		btnLSprichtMit_1.addActionListener(m);
 		add(btnLSprichtMit_1);
 
 		JButton btnLSprichtMit = new JButton("L2 spricht zu K");
 		btnLSprichtMit.setBounds(400, 220, 200, 40);
-		btnLSprichtMit.setActionCommand("l2zuk");
-		btnLSprichtMit.addActionListener(this);
+		btnLSprichtMit.setActionCommand("l2k");
+		btnLSprichtMit.addActionListener(m);
 		add(btnLSprichtMit);
 
 		JButton akk = new JButton("ak spricht zu K");
 		akk.setBounds(400, 310, 200, 40);
 		akk.setActionCommand("akk");
-		akk.addActionListener(this);
+		akk.addActionListener(m);
 		add(akk);
 
 	}

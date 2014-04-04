@@ -12,12 +12,7 @@ public class BeobPanel extends AbstractCustomPanel {
 	private Fenster fenster;
 	private JLabel zeit;
 
-	public BeobPanel(Fenster fenster) {
-        super(fenster);
-    }
-
-    @Override
-    void bauePanel(){
+	public BeobPanel() {
 
 		setLayout(null);
 		
@@ -34,11 +29,7 @@ public class BeobPanel extends AbstractCustomPanel {
 		this.add(zeit);
 	}
 
-    public void updateTime(int sekunden) {
-        if ()
-    }
-	
-	private void displayTime(int sekunden) {
-		zeit.setText("" + (Einstellungen.LAENGEBEOBACHTUNG - sekunden));
+	public void updateTime(int sekunden) {
+		zeit.setText("" + (sekunden - Einstellungen.LAENGEBEOBACHTUNG));
 	}
 }

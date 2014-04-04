@@ -3,41 +3,36 @@ package panels;
 import javax.swing.JButton;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class KindGeleitet extends AbstractFragePanel {
+public class KindGeleitet extends AbstractCustomPanel {
 
-	public KindGeleitet(Fenster fenster) {
-		super(fenster);
-	}
+	public KindGeleitet(ObservationManager m) {
 
-	/**
-	 * Create the panel.
-	 */
-	public void bauePanel() {
 		setLayout(null);
 
 		JButton allein = new JButton("K allein");
 		allein.setBounds(250, 20, 200, 50);
-		allein.setActionCommand("allein");
-		allein.addActionListener(this);
+		allein.setActionCommand("all");
+		allein.addActionListener(m);
 		add(allein);
 
 		JButton knonak = new JButton("K arbeitet nonverbal mit aK");
-		knonak.setActionCommand("knonak");
-		knonak.addActionListener(this);
+		knonak.setActionCommand("non");
+		knonak.addActionListener(m);
 		knonak.setBounds(250, 140, 200, 50);
 		add(knonak);
 		
 		JButton kak = new JButton("K spricht zu aK");
 		kak.setBounds(250, 260, 200, 50);
 		kak.setActionCommand("kak");
-		kak.addActionListener(this);
+		kak.addActionListener(m);
 		add(kak);
 
 		JButton akk = new JButton("aK spricht zu K");
 		akk.setBounds(250, 380, 200, 50);
 		akk.setActionCommand("akk");
-		akk.addActionListener(this);
+		akk.addActionListener(m);
 		add(akk);
 
 	}

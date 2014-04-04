@@ -1,6 +1,13 @@
   package main;
 
+import model.Einstellungen;
+import model.SchuelerModel;
+import panels.AbstractCustomPanel;
+
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 public class Fenster {
@@ -13,21 +20,38 @@ public class Fenster {
     private  JLabel seitenNummer;
     private  JLabel schuelerBesonderheiten;
     private  JLabel schuelerCode;
-    private  JButton zurueck;
 
+    // Zurueckfunktionalitaet
+    JButton zurueck;
 
+    // State
+    JPanel actualPanel;
+
+    // Canvas
     JFrame frame;
 
 	public Fenster() {
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
-		
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                String ObjButtons[] = {"Beenden","Abbrechen"};
+                int PromptResult = JOptionPane.showOptionDialog(null,
+                        "Soll das Programm wirklich beendet werden?", "Beenden",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        ObjButtons,ObjButtons[1]);
+                if(PromptResult==0) {
+                    Speichern.signWithMD5();
+                    System.exit(0);
+                }
+            }
+        });
 
         /**
          * Labels right sidebar
@@ -44,25 +68,26 @@ public class Fenster {
         minutenAnzeige.setForeground(Color.BLACK);
         minutenAnzeige.setHorizontalAlignment(JLabel.CENTER);
 
-        schuelerZaehler = new JLabel("Sch-#");
+        schuelerZaehler = new JLabel("S 0/0");
         schuelerZaehler.setBounds(706,170,90,25);
         schuelerZaehler.setFont(new Font("Arial",Font.BOLD,23));
         schuelerZaehler.setForeground(Color.GREEN);
         schuelerZaehler.setHorizontalAlignment(JLabel.CENTER);
 
-        mikroZyklus = new JLabel("D-#");
+        mikroZyklus = new JLabel("D 0/0");
         mikroZyklus.setBounds(706,230,90,25);
         mikroZyklus.setFont(new Font("Arial",Font.BOLD,23));
         mikroZyklus.setForeground(Color.GREEN);
         mikroZyklus.setHorizontalAlignment(JLabel.CENTER);
 
-        makroZyklus = new JLabel("GD-#");
+        makroZyklus = new JLabel("G 0/0");
         makroZyklus.setBounds(706,310,90,25);
         makroZyklus.setFont(new Font("Arial",Font.BOLD,23));
         makroZyklus.setForeground(Color.BLUE);
         makroZyklus.setHorizontalAlignment(JLabel.CENTER);
 
-        seitenNummer = new JLabel("F-#");
+
+        seitenNummer = new JLabel("");
         seitenNummer.setBounds(706,510,90,25);
         seitenNummer.setFont(new Font("Arial",Font.BOLD,20));
         seitenNummer.setForeground(Color.BLACK);
@@ -84,10 +109,11 @@ public class Fenster {
         schuelerCode.setForeground(Color.BLACK);
         schuelerCode.setHorizontalAlignment(JLabel.CENTER);
 
+        // Zurueckbutton
         zurueck = new JButton("Zurück");
         zurueck.setBounds(20, 500, 100, 30);
-        zurueck.setActionCommand("zurueck");
         zurueck.setVisible(false);
+        frame.add(zurueck);
 
         frame.add(sekundenAnzeige);
         frame.add(minutenAnzeige);
@@ -100,7 +126,14 @@ public class Fenster {
         frame.add(zurueck);
 	}
 
-    public void showPanel(JPanel panel){
+    public void showPanel(AbstractCustomPanel panel){
+        if (actualPanel != null) {
+            actualPanel.setVisible(false);
+            frame.remove(actualPanel);
+        }
+        actualPanel = panel;
+        frame.add(panel);
+        seitenNummer.setText(panel.getKennung());
         panel.setVisible(true);
     }
 
@@ -129,15 +162,25 @@ public class Fenster {
 		minutenAnzeige.setText(formattedTime);
 	}
 
+    public void updateSchuelerAnzahl(int schueleranzahl, int gesamt) {
+        schuelerZaehler.setText("S " + schueleranzahl + "/" + gesamt);
+    }
+
+    public void updateSchuelerdurchlauf(int mikrodurchlauf) {
+        mikroZyklus.setText("D " +  mikrodurchlauf + "/" + Einstellungen.MIKROZYKLUS);
+    }
+
     public void updateGesamtdurchlauf(int gesamtdurchlauf) {
-        makroZyklus.setText("" + (gesamtdurchlauf + 1));
+        makroZyklus.setText("G " + gesamtdurchlauf + "/" + Einstellungen.MAKROZYKLUS);
     }
 
-    public void setSchuelerCode(String c) {
-        schuelerCode.setText(c);
+    public void updateSchuelerDaten(SchuelerModel s) {
+        schuelerCode.setText(s.code);
+        schuelerBesonderheiten.setText(s.besonderheiten);
     }
 
-    public void setSchuelerBesonderheiten(String b){
-        schuelerBesonderheiten.setText(b);
+    public void enableBackBTn(ActionListener l) {
+        //zurueck.addActionListener(l);
+        //zurueck.setVisible(true);
     }
 }

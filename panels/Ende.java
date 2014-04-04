@@ -10,19 +10,13 @@ import javax.swing.JLabel;
 
 import main.Fenster;
 import main.SessionManager;
+import main.Speichern;
 
 @SuppressWarnings("serial")
 public class Ende extends AbstractCustomPanel implements ActionListener{
 
-    private SessionManager session;
-
 	public Ende(SessionManager session) {
-        super();
-        this.session = session;
-    }
 
-    @Override
-	void bauePanel() {
 		this.setLayout(null);
 
 		JLabel frage = new JLabel("Ende des Fragebogens.");
@@ -42,6 +36,7 @@ public class Ende extends AbstractCustomPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("beenden")){
+            Speichern.signWithMD5();
 			System.exit(0);
 		}
 	}				

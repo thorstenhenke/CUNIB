@@ -1,23 +1,22 @@
 package model;
 
-import panels.AbstractFragePanel;
+import panels.AbstractCustomPanel;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class DecisionGraph {
     private HashMap<Object, GraphNode> nodes;
-    private LinkedList<Historytupel> history;
+    private History history;
     private GraphNode startNode;
     private GraphNode actualState;
 
     public DecisionGraph() {
         nodes = new HashMap<Object, GraphNode>();
-        history = new LinkedList<Historytupel>();
+        history = new History();
     }
 
-    public void addRelation(AbstractFragePanel predecessor, String transition, AbstractFragePanel successor) {
+    public void addRelation(AbstractCustomPanel predecessor, String transition, AbstractCustomPanel successor) {
         GraphNode pr;
         GraphNode su;
         if (nodes.containsKey(predecessor) && nodes.containsKey(successor)) {
@@ -38,16 +37,21 @@ public class DecisionGraph {
         nodes.put(successor, su);
     }
 
-    public void setAsStart(AbstractFragePanel predeccessor){
+    public void setAsStart(AbstractCustomPanel predeccessor){
         startNode = nodes.get(predeccessor);
     }
 
-    public void resetGraph() {
+    public void reset() {
         actualState = startNode;
+        resetHistory();
+    }
+
+    public void resetHistory() {
+        history.reset();
     }
 
     public DecisionGraph next(String answer) {
-        history.addLast(new Historytupel(actualState, answer));
+        history.addLast(actualState, answer);
         actualState = actualState.next(answer);
         return this;
     }
@@ -56,7 +60,7 @@ public class DecisionGraph {
      * FALSCH!!!!
      */
     public DecisionGraph rollback(){
-        // besser poplast und actualState updaten
+        actualState = history.getLastNode();
         history.removeLast();
         return this;
     }
@@ -65,13 +69,10 @@ public class DecisionGraph {
        return actualState;
     }
 
-    public LinkedList<Historytupel> getHistory() {
-        return history;
+    public History getHistory() {
+        return (History) history;
     }
 
-    public void resetHistory() {
-        history.clear();
-    }
 }
 
 

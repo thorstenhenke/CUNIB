@@ -3,33 +3,26 @@ package panels;
 import javax.swing.JButton;
 
 import main.Fenster;
+import main.ObservationManager;
 
-public class Interaktion extends AbstractFragePanel {
-
-	private JButton btnGesamteKlasse;
-	private JButton btnGruppenarbeit;
+public class Interaktion extends AbstractCustomPanel {
 
 
-	public Interaktion(Fenster fenster) {
-		super(fenster);
-	}
 
-	/**
-	 * Create the panel.
-	 */
-	public void bauePanel() {
+	public Interaktion(ObservationManager m) {
+
 		setLayout(null);
-		
-		btnGesamteKlasse = new JButton("Interaktion lang");
+
+        JButton btnGesamteKlasse = new JButton("Interaktion lang");
 		btnGesamteKlasse.setBounds(250, 130, 200, 50);
-		btnGesamteKlasse.setActionCommand("Interaktion lang");
-		btnGesamteKlasse.addActionListener(this);
+		btnGesamteKlasse.setActionCommand("lan");
+		btnGesamteKlasse.addActionListener(m);
 		add(btnGesamteKlasse);
-		
-		btnGruppenarbeit = new JButton("Interaktion kurz");
+
+        JButton btnGruppenarbeit = new JButton("Interaktion kurz");
 		btnGruppenarbeit.setBounds(250, 260, 200, 50);
-		btnGruppenarbeit.setActionCommand("Interaktion kurz");
-		btnGruppenarbeit.addActionListener(this);
+		btnGruppenarbeit.setActionCommand("kur");
+		btnGruppenarbeit.addActionListener(m);
 		add(btnGruppenarbeit);
 
 	}
