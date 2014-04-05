@@ -6,18 +6,17 @@ import model.Einstellungen;
 import model.SchuelerModel;
 import panels.*;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.TimerTask;
 
 public class ObservationManager implements ActionListener {
 
     private SessionManager sessionManager;
     private DecisionGraph decisionManager;
     private Fenster fenster;
-    private java.util.Timer timer;
 
-    javax.swing.Timer t;
+    final Timer t;
 
     // Panel
     private AusgewaehlterSchueler schuelerPanel;
@@ -26,7 +25,7 @@ public class ObservationManager implements ActionListener {
 
     // Statevariablen
     private SchuelerModel aktuellerSchuelerModell;
-    private volatile int zeit;
+    private int zeit;
     private int intervalle;
 
     public ObservationManager(Fenster f, SessionManager sessionManager) {
@@ -45,8 +44,6 @@ public class ObservationManager implements ActionListener {
         beobachtPanel = new BeobPanel();
         wartePanel = new WartePanel(this);
 
-        this.timer = new java.util.Timer();
-
         //Diverse Timer :)
         t = new javax.swing.Timer(1000, new ActionListener() {
             @Override
@@ -54,17 +51,18 @@ public class ObservationManager implements ActionListener {
                 fenster.updateSekunden(zeit);
                 beobachtPanel.updateTime(zeit);
                 wartePanel.updateTime(zeit);
-                if (zeit < 1) {
-                    zeit = 0; // ????
+                System.out.println("Zeit " + zeit);
+                if (zeit <= 1) {
+                    zeit = 0;
                     t.stop();
                     trageein();
                 } else {
                     zeit--;
                 }
-
             }
         });
         t.setInitialDelay(0);
+
     }
 
     void starteMakrozyklus() {
@@ -82,10 +80,9 @@ public class ObservationManager implements ActionListener {
     void starteMiniZyklus() {
         if (intervalle < Einstellungen.MIKROZYKLUS) {
             intervalle++;
-            zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
-            // reset()
-            t.restart();
-            // TODO ggf liegt hier das Problem mit dem Timer
+            this.zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
+            t.start(); // <= ???
+            System.out.println("t.start() => " + zeit);
             beobachte();
         } else {
             starteMakrozyklus(); // callback
@@ -93,14 +90,14 @@ public class ObservationManager implements ActionListener {
     }
 
     void beobachte() {
-        TimerTask beobachteTask = new TimerTask() {
+        Timer b = new Timer(1000 * Einstellungen.LAENGEBEOBACHTUNG, new ActionListener() {
             @Override
-            public void run() {
+            public void actionPerformed(ActionEvent e) {
                 trageein();
-                this.cancel();
             }
-        };
-        timer.schedule(beobachteTask, Einstellungen.LAENGEBEOBACHTUNG * 1000);
+        });
+        b.setRepeats(false);
+        b.start();
         fenster.updateSchuelerdurchlauf(intervalle);
         decisionManager.reset();
         fenster.showPanel(beobachtPanel);
@@ -111,6 +108,7 @@ public class ObservationManager implements ActionListener {
         if (actualPanel == null) {
             fenster.zurueck.setVisible(false);
             if (zeit == 0) {
+                System.out.println("Trage ein");
                 aktuellerSchuelerModell.addBeobachtung(decisionManager.getHistory());
                 decisionManager.resetHistory();
                 starteMiniZyklus(); // callback
