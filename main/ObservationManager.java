@@ -16,7 +16,8 @@ public class ObservationManager implements ActionListener {
     private DecisionGraph decisionManager;
     private Fenster fenster;
 
-    final Timer t;
+    Timer t;
+    ActionListener l;
 
     // Panel
     private AusgewaehlterSchueler schuelerPanel;
@@ -44,94 +45,33 @@ public class ObservationManager implements ActionListener {
         beobachtPanel = new BeobPanel();
         wartePanel = new WartePanel(this);
 
-        //Diverse Timer :)
-        t = new javax.swing.Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fenster.updateSekunden(zeit);
-                beobachtPanel.updateTime(zeit);
-                wartePanel.updateTime(zeit);
-                System.out.println("Zeit " + zeit);
-                if (zeit <= 1) {
-                    zeit = 0;
-                    t.stop();
-                    trageein();
-                } else {
-                    zeit--;
-                }
-            }
-        });
-        t.setInitialDelay(0);
 
     }
 
-    void starteMakrozyklus() {
+    void zyklusAbgeschlossen() {
+        if (zeit > 0) {
+            fenster.showPanel(wartePanel);
+        } else {
+            if (intervalle < Einstellungen.MIKROZYKLUS) {
+                // weitermachen
+            } else {
+                schuelerFertig();
+            }
+        }
+    }
+
+    void schuelerFertig() {
         if (sessionManager.session.hasMoreSchueler()) {
-            aktuellerSchuelerModell = sessionManager.session.ziehe();
-            fenster.updateSchuelerDaten(aktuellerSchuelerModell);
-            fenster.updateSchuelerAnzahl(sessionManager.session.anzahlGetesteterSchueler(), sessionManager.session.arrschueler.length);
-            schuelerPanel.updateSchuelerDaten(aktuellerSchuelerModell);
-            fenster.showPanel(schuelerPanel);
+            // mach mit dem nächsten weiter
         } else {
-            sessionManager.zyklusAbgeschlossen(); // callback
-        }
-    }
-
-    void starteMiniZyklus() {
-        if (intervalle < Einstellungen.MIKROZYKLUS) {
-            intervalle++;
-            this.zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
-            t.start(); // <= ???
-            System.out.println("t.start() => " + zeit);
-            beobachte();
-        } else {
-            starteMakrozyklus(); // callback
-        }
-    }
-
-    void beobachte() {
-        Timer b = new Timer(1000 * Einstellungen.LAENGEBEOBACHTUNG, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                trageein();
-            }
-        });
-        b.setRepeats(false);
-        b.start();
-        fenster.updateSchuelerdurchlauf(intervalle);
-        decisionManager.reset();
-        fenster.showPanel(beobachtPanel);
-    }
-
-    void trageein() {
-        AbstractCustomPanel actualPanel = decisionManager.actualState().panel;
-        if (actualPanel == null) {
-            fenster.zurueck.setVisible(false);
-            if (zeit == 0) {
-                System.out.println("Trage ein");
-                aktuellerSchuelerModell.addBeobachtung(decisionManager.getHistory());
-                decisionManager.resetHistory();
-                starteMiniZyklus(); // callback
-            } else { // zeit > 0
-                fenster.showPanel(wartePanel);
-            }
-        } else {
-            fenster.zurueck.setVisible(true);
-            fenster.showPanel(actualPanel);
+            //ende
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("AusgewaehlterSchueler::Weiter")) {
-            intervalle = 0;
-            starteMiniZyklus();
-        } else if (e.getActionCommand().equals("Fenster::Zurueck")) {
-            decisionManager.rollback();
-            trageein();
-        } else {
-            decisionManager.next(e.getActionCommand());
-            trageein();
+            this.starteSchuelerZyklus();
         }
     }
 
@@ -211,3 +151,4 @@ public class ObservationManager implements ActionListener {
     }
 
 }
+
