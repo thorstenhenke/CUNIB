@@ -4,8 +4,8 @@ import model.SchuelerModel;
 import model.SessionModel;
 import model.Einstellungen;
 import panels.Ende;
+import panels.InitialPanel;
 import panels.Pause;
-import panels.StartPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +19,7 @@ public class SessionManager implements ActionListener{
     ObservationManager observationManager;
 
     // Panel
-    private StartPanel startPanel;
+    private InitialPanel initialPanel;
     private Pause helmke;
     private Ende ende;
 
@@ -33,18 +33,18 @@ public class SessionManager implements ActionListener{
         observationManager = new ObservationManager(fenster, this);
 
         // Panel
-        startPanel = new StartPanel(this);
+        initialPanel = new InitialPanel(this);
         helmke = new Pause(this);
         ende = new Ende(this);
 
         timer = new Timer();
         gesamtdurchlauf = 0;
 
-        fenster.showPanel(startPanel);
+        fenster.showPanel(initialPanel);
     }
 
     public void starteSession() {
-        session = startPanel.getSessionInfos();
+        session = initialPanel.getSessionInfos();
         unterrichtsZeit = Einstellungen.LAENGESESSION;
         TimerTask task = new TimerTask() {
             @Override
@@ -59,7 +59,6 @@ public class SessionManager implements ActionListener{
     }
 
     void starteNeuenZyklus() {
-        System.out.println("starte Neuen Zyklus Called");
         gesamtdurchlauf++;
         fenster.updateGesamtdurchlauf(gesamtdurchlauf);
         session.resetRandomGenerator();
@@ -84,10 +83,10 @@ public class SessionManager implements ActionListener{
         if (e.getActionCommand().equals("Pause::Weiter")) {
             starteNeuenZyklus();
         } else if (e.getActionCommand().equals("StartPanel::Weiter")) {
-            if (startPanel.inputIsValid()) {
+            if (initialPanel.inputIsValid()) {
                 starteSession();
             } else {
-                startPanel.alert();
+                initialPanel.alert();
             }
         }
     }

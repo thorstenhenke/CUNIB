@@ -39,14 +39,11 @@ public class DecisionGraph {
 
     public void setAsStart(AbstractCustomPanel predeccessor){
         startNode = nodes.get(predeccessor);
+        actualState = startNode;
     }
 
     public void reset() {
         actualState = startNode;
-        resetHistory();
-    }
-
-    public void resetHistory() {
         history.reset();
     }
 
@@ -56,13 +53,14 @@ public class DecisionGraph {
         return this;
     }
 
-    /**
-     * FALSCH!!!!
-     */
     public DecisionGraph rollback(){
         actualState = history.getLastNode();
         history.removeLast();
         return this;
+    }
+
+    public boolean reachedEnd() {
+        return actualState.panel == null;
     }
 
     public GraphNode actualState(){
@@ -70,7 +68,7 @@ public class DecisionGraph {
     }
 
     public History getHistory() {
-        return (History) history;
+        return history;
     }
 
 }
