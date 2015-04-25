@@ -159,6 +159,8 @@ public class ObservationManager implements ActionListener
 
         decisionManager.addRelation(inhalt, "auf", lernkontext);
         decisionManager.addRelation(inhalt, "nau", lernkontext);
+        decisionManager.addRelation(inhalt, "LEER", null);
+
 
         decisionManager.addRelation(lernkontext, "ind", individuell);
         decisionManager.addRelation(lernkontext, "ges", gesamteKlasse);

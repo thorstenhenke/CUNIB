@@ -20,22 +20,28 @@ public class Inhalt extends AbstractCustomPanel
         warnhinweis.setHorizontalAlignment(JLabel.CENTER);
         add(warnhinweis);
 
-        JLabel lblLernkontext = new JLabel("Inhalt...");
-        lblLernkontext.setFont(new Font("Tahoma", Font.BOLD, 17));
-        lblLernkontext.setBounds(250, 70, 200, 30);
-        lblLernkontext.setHorizontalAlignment(JLabel.CENTER);
-        add(lblLernkontext);
+        JLabel lblInhalt = new JLabel("Inhalt...");
+        lblInhalt.setFont(new Font("Tahoma", Font.BOLD, 17));
+        lblInhalt.setBounds(250, 70, 200, 30);
+        lblInhalt.setHorizontalAlignment(JLabel.CENTER);
+        add(lblInhalt);
 
-        JButton btnGesamteKlasse = new JButton("aufgabenbezogen");
-        btnGesamteKlasse.setBounds(250, 170, 200, 59);
-        btnGesamteKlasse.setActionCommand("auf");
-        btnGesamteKlasse.addActionListener(m);
-        add(btnGesamteKlasse);
+        JButton btnAufgabenbezogen = new JButton("aufgabenbezogen");
+        btnAufgabenbezogen.setBounds(250, 140, 200, 59);
+        btnAufgabenbezogen.setActionCommand("auf");
+        btnAufgabenbezogen.addActionListener(m);
+        add(btnAufgabenbezogen);
 
-        JButton btnGruppenarbeit = new JButton("nicht aufgabenbezogen");
-        btnGruppenarbeit.setBounds(250, 290, 200, 59);
-        btnGruppenarbeit.setActionCommand("nau");
-        btnGruppenarbeit.addActionListener(m);
-        add(btnGruppenarbeit);
+        JButton btnNichtAufgabenbezogen = new JButton("nicht aufgabenbezogen");
+        btnNichtAufgabenbezogen.setBounds(250, 240, 200, 59);
+        btnNichtAufgabenbezogen.setActionCommand("nau");
+        btnNichtAufgabenbezogen.addActionListener(m);
+        add(btnNichtAufgabenbezogen);
+
+        JButton btnSchuelerAbwesend = new JButton("Schüler ist nicht im Raum");
+        btnSchuelerAbwesend.setBounds(250, 380, 200, 59);
+        btnSchuelerAbwesend.setActionCommand("LEER");
+        btnSchuelerAbwesend.addActionListener(m);
+        add(btnSchuelerAbwesend);
     }
 }
