@@ -9,7 +9,8 @@ public class Einstellungen
     public static final int LAENGEBEOBACHTUNG   = 10;
     public static final int MIKROZYKLUS         = 8;
     public static final int MAKROZYKLUS         = 2;
-    public static final int SCODESTELLEN        = 6;
+    public static final int MINSCODESTELLEN     = 1;
+    public static final int MAXSCODESTELLEN     = 2;
     public static final int KCODESTELLEN        = 4;
     public static final String[] BEOBACHTER = {
             "", "Anja", "Anne", "Annelie", "Christian", "Jennifer", "Sabina", "Sophia", "Steffi", "Thorsten", "Ulrike"

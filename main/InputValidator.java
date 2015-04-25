@@ -16,23 +16,28 @@ public class InputValidator
     public static boolean hasValidSCodes(String[] codes)
     {
         for (String code : codes) {
-            if (!(code.equals("") || validateCode(code, Einstellungen.SCODESTELLEN))) {
+            if (!(code.equals("") || validateCode(code, Einstellungen.MINSCODESTELLEN, Einstellungen.MAXSCODESTELLEN))) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean validateCode(String strcode, int ndigits)
+    private static boolean validateCode(String strcode, int mindigits, int maxdigits)
     {
         char[] digits = strcode.toCharArray();
-        if (digits.length == 0 || digits.length != ndigits)
+        if (digits.length <= 0 || digits.length < mindigits || digits.length > maxdigits)
             return false;
         for (char c : digits) {
             if (!Character.isDigit(c))
                 return false;
         }
         return true;
+    }
+
+    private static boolean validateCode(String strcode, int ndigits)
+    {
+        return validateCode(strcode, ndigits, ndigits);
     }
 
     public static boolean hasValidRdBtn(ButtonGroup g)
