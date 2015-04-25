@@ -13,11 +13,13 @@ public class Pause extends AbstractCustomPanel
     {
         setLayout(null);
         JLabel disclaimer = new JLabel(
-                "<html><body><center>" +
-                        "Der erste Durchgang der Schülerbeobachtung ist <br>" +
-                        "abgeschlossen. Rufe nun das Programm zur <br>" +
-                        "allgemeinen Unterrichtsqualität auf." +
-                        "</center></body></html>"
+                "<html>" +
+                        "<body><center>" +
+                            "Der erste Durchgang der Schülerbeobachtung ist <br>" +
+                            "abgeschlossen. Rufe nun das Programm zur <br>" +
+                            "allgemeinen Unterrichtsqualität auf." +
+                        "</center></body>" +
+                "</html>"
         );
         disclaimer.setFont(new Font("Tahoma", Font.BOLD, 17));
         disclaimer.setBounds(130, 30, 500, 100);
