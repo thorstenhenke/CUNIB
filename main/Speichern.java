@@ -1,24 +1,28 @@
 package main;
 
-import model.SessionModel;
 import model.Einstellungen;
+import model.SessionModel;
 
 import javax.swing.*;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.MessageDigest;
-import java.io.*;
 
-public class Speichern {
+public class Speichern
+{
 
     private static File targetFile;
 
-    // Create File wird ganz zu Anfang aufgerufen
-    public static void createFile(SessionModel s) {
+    public static void createFile(SessionModel s)
+    {
         String desktop = System.getProperty("user.home") + "/Desktop";
         String name = s.klassennummer + "-" + s.fach + "-" + s.beobachterstunde + "-" + Einstellungen.KENNUNG;
         targetFile = new File(desktop + "/" + name + Einstellungen.EXTENSION);
         for (int id = 1; targetFile.exists(); id++) {
-            targetFile = new File(desktop + "/" + name  + "(" + id + ")" + Einstellungen.EXTENSION);
+            targetFile = new File(desktop + "/" + name + "(" + id + ")" + Einstellungen.EXTENSION);
         }
         try {
             targetFile.createNewFile();
@@ -30,7 +34,8 @@ public class Speichern {
         }
     }
 
-    public static void saveString(String s) {
+    public static void saveString(String s)
+    {
         try {
             FileWriter fw = new FileWriter(targetFile, true);
             fw.write(s);
@@ -43,7 +48,8 @@ public class Speichern {
         }
     }
 
-    public static void signWithMD5() {
+    public static void signWithMD5()
+    {
         String hash = "";
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

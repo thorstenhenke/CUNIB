@@ -5,18 +5,20 @@ import main.Speichern;
 import java.util.Calendar;
 import java.util.Collection;
 
-public class SessionModel {
+public class SessionModel
+{
 
     public final String klassennummer;
-	public final String beobachter;
-	public final String beobachterstunde;
-	public final String fach;
-	public final String schulstunde;
+    public final String beobachter;
+    public final String beobachterstunde;
+    public final String fach;
+    public final String schulstunde;
     public final SchuelerModel[] arrschueler;
 
     private int limit;
 
-    public SessionModel(String klnr, String beobachter, String bstunde, String fach, String sstunde, Collection<SchuelerModel> schuelerModel) {
+    public SessionModel(String klnr, String beobachter, String bstunde, String fach, String sstunde, Collection<SchuelerModel> schuelerModel)
+    {
         this.klassennummer = klnr;
         this.beobachter = beobachter;
         this.beobachterstunde = bstunde;
@@ -28,22 +30,26 @@ public class SessionModel {
         Speichern.saveString(this.toString());
     }
 
-    public int anzahlGetesteterSchueler() {
+    public int anzahlGetesteterSchueler()
+    {
         return arrschueler.length - limit;
     }
 
-    public void resetRandomGenerator() {
+    public void resetRandomGenerator()
+    {
         this.limit = arrschueler.length;
     }
 
-    public Boolean hasMoreSchueler(){
+    public Boolean hasMoreSchueler()
+    {
         if (limit == 0) {
             return false;
         }
         return true;
     }
 
-    public SchuelerModel ziehe() {
+    public SchuelerModel ziehe()
+    {
         int idx = (int) (Math.random() * limit);
         SchuelerModel s = arrschueler[idx];
 
@@ -54,7 +60,8 @@ public class SessionModel {
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         Calendar cal = Calendar.getInstance();
 
         String rueckgabe = "<Metadaten> \r\n";

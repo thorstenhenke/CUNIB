@@ -3,33 +3,35 @@ package panels;
 import main.Fenster;
 import model.Einstellungen;
 
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 
-import javax.swing.JLabel;
+public class BeobPanel extends AbstractCustomPanel
+{
 
-public class BeobPanel extends AbstractCustomPanel {
+    private Fenster fenster;
+    private JLabel zeit;
 
-	private Fenster fenster;
-	private JLabel zeit;
+    public BeobPanel()
+    {
 
-	public BeobPanel() {
+        setLayout(null);
 
-		setLayout(null);
-		
-		JLabel modus = new JLabel("Verbleibende Beobachtungszeit...");
-		modus.setBounds(200, 100, 300, 80);
-		modus.setFont(new Font("Tahoma", Font.BOLD, 17));
-		modus.setVisible(true);
-		this.add(modus);
-		
-	    zeit = new JLabel();
-		zeit.setBounds(325, 200, 150, 80);
-		zeit.setFont(new Font("Tahoma", Font.BOLD, 23));
-		zeit.setVisible(true);
-		this.add(zeit);
-	}
+        JLabel modus = new JLabel("Verbleibende Beobachtungszeit...");
+        modus.setBounds(200, 100, 300, 80);
+        modus.setFont(new Font("Tahoma", Font.BOLD, 17));
+        modus.setVisible(true);
+        this.add(modus);
 
-	public void updateTime(int sekunden) {
-		zeit.setText("" + (sekunden - Einstellungen.LAENGEBEOBACHTUNG));
-	}
+        zeit = new JLabel();
+        zeit.setBounds(325, 200, 150, 80);
+        zeit.setFont(new Font("Tahoma", Font.BOLD, 23));
+        zeit.setVisible(true);
+        this.add(zeit);
+    }
+
+    public void updateTime(int sekunden)
+    {
+        zeit.setText("" + (sekunden - Einstellungen.LAENGEBEOBACHTUNG));
+    }
 }

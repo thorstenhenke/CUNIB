@@ -1,6 +1,5 @@
 package main;
 
-
 import model.DecisionGraph;
 import model.Einstellungen;
 import model.SchuelerModel;
@@ -10,13 +9,13 @@ import panels.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-//import java.util.Timer;
-//import java.util.TimerTask;
 
-public class ObservationManager implements ActionListener {
+public class ObservationManager implements ActionListener
+{
 
     private final SessionManager sessionManager;
     private final DecisionGraph decisionManager;
+    private final ActionListener timerTask;
     private final Fenster fenster;
 
     // Panel
@@ -28,14 +27,11 @@ public class ObservationManager implements ActionListener {
     // Statevariablen
     private SchuelerModel aktuellerSchueler;
     private volatile int zeit;
-    private int intervalle;
+    private int durchgaenge;
 
-    // Stuff
-    private final ActionListener l;
-    private final Timer t;
-    //private final Timer t;
 
-    public ObservationManager(Fenster f, SessionManager sessionManager) {
+    public ObservationManager(Fenster f, SessionManager sessionManager)
+    {
         this.fenster = f;
         this.sessionManager = sessionManager;
         this.decisionManager = initializeDecisionManager(new DecisionGraph());
@@ -50,109 +46,102 @@ public class ObservationManager implements ActionListener {
         wartePanel = new WartePanel(this);
         startPanel = decisionManager.actualState().panel;
 
-        //t = new Timer();
-        /**
-         * Versuche
-*/
-        l = new ActionListener() {
+        timerTask = new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(zeit);
-                //fenster.updateSekunden(zeit);
+            public void actionPerformed(ActionEvent e)
+            {
+                fenster.updateSekunden(zeit);
                 beobachtPanel.updateTime(zeit);
-                //wartePanel.updateTime(zeit);
+                wartePanel.updateTime(zeit);
+                if (zeit == Einstellungen.LAENGEBEOBACHTUNG) {
+                    fenster.showPanel(startPanel);
+                }
                 if (zeit > 0) {
                     zeit--;
                 } else {
                     ((Timer) e.getSource()).stop();
                     zeitIstAbgelaufen();
                 }
-                if (zeit == Einstellungen.LAENGEBEOBACHTUNG) {
-                    fenster.showPanel(startPanel);
-                }
             }
         };
-        t = new Timer(1000, l);
-        t.setInitialDelay(0);
-
     }
 
-    void starteMakrozyklus() {
+    void starteSchuelerZyklus()
+    {
         SessionModel sm = sessionManager.session;
-        aktuellerSchueler = sm.ziehe(); // TODO global
-        // alle benachrichtigen => ggf mit dem Pattern (Javaeigener Observer??)
+        aktuellerSchueler = sm.ziehe();
         fenster.updateSchuelerAnzahl(sm.anzahlGetesteterSchueler(), sm.arrschueler.length);
         fenster.updateSchuelerDaten(aktuellerSchueler);
         schuelerPanel.updateSchuelerDaten(aktuellerSchueler);
         fenster.showPanel(schuelerPanel);
     }
 
-    void starteMinizyklus()  {
-        intervalle++;
+    void starteBeobachtungsZyklus()
+    {
+        durchgaenge++;
+        fenster.updateSchuelerdurchlauf(durchgaenge);
         zeit = Einstellungen.LAENGEBEOBACHTUNG + Einstellungen.LAENGEEINTRAGEN;
         decisionManager.reset();
-        // ggf nach oben wg Performance
+
+        // Neuerzeugen von Timer und sleep verhindern -10 Problem
+        Timer beobachtungsTimer = new Timer(1000, timerTask);
+        beobachtungsTimer.setInitialDelay(0);
+        beobachtungsTimer.start();
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         fenster.showPanel(beobachtPanel);
-        t.restart();
-        /**
-        t.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                System.out.println(zeit);
-                if (zeit > 0) {
-                    zeit--;
-                } else {
-                    zeitIstAbgelaufen();
-                    this.cancel();
-                }
-                if (zeit == Einstellungen.LAENGEBEOBACHTUNG) {
-                    fenster.showPanel(startPanel);
-                }
-            }
-        },1000,1000);
-         **/
     }
 
-    void eintragenIstAbgeschlossen() {
+    void eintragenIstAbgeschlossen()
+    {
+        fenster.zurueck.setVisible(false);
         if (zeit <= 0) {
-            intervalEnde();
+            beobachtungIstAbgeschlossen();
         } else {
             fenster.showPanel(wartePanel);
         }
     }
 
-    void zeitIstAbgelaufen() {
+    void zeitIstAbgelaufen()
+    {
         if (decisionManager.reachedEnd()) {
-            intervalEnde();
+            beobachtungIstAbgeschlossen();
         }
     }
 
-    void intervalEnde() {
-        if (intervalle < Einstellungen.MIKROZYKLUS) {
+    void beobachtungIstAbgeschlossen()
+    {
+        if (durchgaenge < Einstellungen.MIKROZYKLUS) {
             aktuellerSchueler.addBeobachtung(decisionManager.getHistory());
-            starteMinizyklus();
+            starteBeobachtungsZyklus();
         } else {
             schuelerIstAbgeschlossen();
         }
     }
 
-    void schuelerIstAbgeschlossen() {
+    void schuelerIstAbgeschlossen()
+    {
         if (sessionManager.session.hasMoreSchueler()) {
-            starteMakrozyklus();
+            starteSchuelerZyklus();
         } else {
             sessionManager.zyklusAbgeschlossen();
         }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         if (e.getActionCommand().equals("AusgewaehlterSchueler::Weiter")) {
-            intervalle = 0;
-            starteMinizyklus();
+            durchgaenge = 0;
+            starteBeobachtungsZyklus();
         } else if (e.getActionCommand().equals("Fenster::Zurueck")) {
             decisionManager.rollback();
             fenster.showPanel(decisionManager.actualState().panel);
-        } else { // Alle Buttonereignisse von den Panels
+        } else {
             decisionManager.next(e.getActionCommand());
             if (decisionManager.reachedEnd()) {
                 eintragenIstAbgeschlossen();
@@ -163,8 +152,8 @@ public class ObservationManager implements ActionListener {
         }
     }
 
-
-    private DecisionGraph initializeDecisionManager(DecisionGraph decisionManager) {
+    private DecisionGraph initializeDecisionManager(DecisionGraph decisionManager)
+    {
         AbstractCustomPanel inhalt = new Inhalt(this);
         AbstractCustomPanel lernkontext = new Lernkontext(this);
         AbstractCustomPanel individuell = new Individuell(this);
@@ -217,7 +206,6 @@ public class ObservationManager implements ActionListener {
         decisionManager.addRelation(kindGeleitet, "kak", interaktion);
         decisionManager.addRelation(kindGeleitet, "akk", interaktion);
 
-        //##
         decisionManager.addRelation(lehrerGeleitet, "all", null);
         decisionManager.addRelation(lehrerGeleitet, "tei", null);
         decisionManager.addRelation(lehrerGeleitet, "non", null);

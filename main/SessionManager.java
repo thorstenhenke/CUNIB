@@ -1,19 +1,20 @@
 package main;
 
-import model.SchuelerModel;
-import model.SessionModel;
 import model.Einstellungen;
+import model.SessionModel;
 import panels.Ende;
 import panels.InitialPanel;
 import panels.Pause;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
 
 
-public class SessionManager implements ActionListener{
+public class SessionManager implements ActionListener
+{
     SessionModel session;
     Fenster fenster;
     ObservationManager observationManager;
@@ -28,7 +29,8 @@ public class SessionManager implements ActionListener{
     private int unterrichtsZeit;
     private int gesamtdurchlauf;
 
-    SessionManager(Fenster fenster) {
+    SessionManager(Fenster fenster)
+    {
         this.fenster = fenster;
         observationManager = new ObservationManager(fenster, this);
 
@@ -43,43 +45,54 @@ public class SessionManager implements ActionListener{
         fenster.showPanel(initialPanel);
     }
 
-    public void starteSession() {
+    public void starteSession()
+    {
         session = initialPanel.getSessionInfos();
         unterrichtsZeit = Einstellungen.LAENGESESSION;
-        TimerTask task = new TimerTask() {
+        TimerTask task = new TimerTask()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 if (unterrichtsZeit == 0) this.cancel();
                 unterrichtsZeit--;
-                fenster.updateMinuten(unterrichtsZeit);
+                SwingUtilities.invokeLater(
+                        new Runnable()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                fenster.updateMinuten(unterrichtsZeit);
+                            }
+                        }
+                );
             }
         };
-        timer.schedule(task, 0, 1000);
+        timer.scheduleAtFixedRate(task, 0, 1000);
         starteNeuenZyklus();
     }
 
-    void starteNeuenZyklus() {
+    void starteNeuenZyklus()
+    {
         gesamtdurchlauf++;
         fenster.updateGesamtdurchlauf(gesamtdurchlauf);
         session.resetRandomGenerator();
-        observationManager.starteMakrozyklus();
+        observationManager.starteSchuelerZyklus();
 
     }
 
-    void zyklusAbgeschlossen() {
+    void zyklusAbgeschlossen()
+    {
         if (gesamtdurchlauf < Einstellungen.MAKROZYKLUS) {
             fenster.showPanel(helmke);
         } else {
-            System.out.println(session);
-            for (SchuelerModel s: session.arrschueler) {
-                System.out.println(s);
-            }
             fenster.showPanel(ende);
         }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
         if (e.getActionCommand().equals("Pause::Weiter")) {
             starteNeuenZyklus();
         } else if (e.getActionCommand().equals("StartPanel::Weiter")) {
