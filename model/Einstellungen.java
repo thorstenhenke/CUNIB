@@ -9,8 +9,8 @@ public class Einstellungen
     public static final int LAENGEEINTRAGEN     = 10;
     public static final int LAENGEBEOBACHTUNG   = 10;
 
-    public static final int MIKROZYKLUS         = 1;
-    public static final int MAKROZYKLUS         = 8;
+    public static final int MIKROZYKLUS         = 8;
+    public static final int MAKROZYKLUS         = 1;
     public static final int PAUSE               = 4;
 
     public static final int MINSCODESTELLEN     = 1;
