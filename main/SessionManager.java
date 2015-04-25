@@ -5,6 +5,7 @@ import model.SessionModel;
 import panels.Ende;
 import panels.InitialPanel;
 import panels.Pause;
+import panels.Schuelercodes;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ public class SessionManager implements ActionListener
 
     // Panel
     private InitialPanel initialPanel;
+    private Schuelercodes schuelerPanel;
     private Pause helmke;
     private Ende ende;
 
@@ -32,13 +34,19 @@ public class SessionManager implements ActionListener
     SessionManager(Fenster fenster)
     {
         this.fenster = fenster;
-        observationManager = new ObservationManager(fenster, this);
 
         // Panel
         initialPanel = new InitialPanel(this);
+        schuelerPanel = new Schuelercodes(this);
         helmke = new Pause(this);
         ende = new Ende(this);
 
+        // Zurueck Button
+        fenster.zurueck.setActionCommand("Schuelercodes::Zurueck");
+        fenster.zurueck.addActionListener(this);
+        fenster.zurueck.setVisible(false);
+
+        // Seitenanzeige
         timer = new Timer();
         gesamtdurchlauf = 0;
 
@@ -47,8 +55,19 @@ public class SessionManager implements ActionListener
 
     public void starteSession()
     {
-        session = initialPanel.getSessionInfos();
+        fenster.zurueck.setVisible(false);
+        observationManager = new ObservationManager(fenster, this);
+
+        session = new SessionModel(
+                (String) initialPanel.getSessionInfos().get("Klassennummer"),
+                (String) initialPanel.getSessionInfos().get("Beobachter"),
+                (String) initialPanel.getSessionInfos().get("Beobachtungsstunde"),
+                (String) initialPanel.getSessionInfos().get("Fach"),
+                (String) initialPanel.getSessionInfos().get("Schulstunde"),
+                schuelerPanel.getSchueler()
+                );
         unterrichtsZeit = Einstellungen.LAENGESESSION;
+
         TimerTask task = new TimerTask()
         {
             @Override
@@ -96,11 +115,21 @@ public class SessionManager implements ActionListener
         if (e.getActionCommand().equals("Pause::Weiter")) {
             starteNeuenZyklus();
         } else if (e.getActionCommand().equals("StartPanel::Weiter")) {
-            if (initialPanel.inputIsValid()) {
-                starteSession();
+            if (initialPanel.inputIsValid()){
+                fenster.showPanel(schuelerPanel);
+                fenster.zurueck.setVisible(true);
             } else {
                 initialPanel.alert();
             }
+        } else if (e.getActionCommand().equals("Schuelercodes::Weiter")) {
+            if (schuelerPanel.inputIsValid()) {
+                starteSession();
+            } else {
+                schuelerPanel.alert();
+            }
+        } else if (e.getActionCommand().equals("Schuelercodes::Zurueck")) {
+            fenster.zurueck.setVisible(false);
+            fenster.showPanel(initialPanel);
         }
     }
 }
