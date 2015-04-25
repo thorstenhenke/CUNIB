@@ -31,6 +31,8 @@ public class InitialPanel extends AbstractCustomPanel
     {
         this.setLayout(null);
 
+        /*linke spalte*/
+
         JLabel lblKlassencode = new JLabel("Klassencode");
         lblKlassencode.setBounds(35, 10, 84, 14);
         this.add(lblKlassencode);
@@ -58,30 +60,34 @@ public class InitialPanel extends AbstractCustomPanel
         this.add(fachDeutsch);
 
         JRadioButton fachMathe = new JRadioButton("Mathematik");
-        fachMathe.setBounds(135, 190, 100, 23);
+        fachMathe.setBounds(135, 190, 120, 23);
         this.add(fachMathe);
 
         fach = new ButtonGroup();
         fach.add(fachDeutsch);
         fach.add(fachMathe);
 
+        /*rechte spalte*/
+
         JLabel lblBeobachtungsstunde = new JLabel("Beobachtungsstunde");
-        lblBeobachtungsstunde.setBounds(35, 240, 171, 14);
+        lblBeobachtungsstunde.setBounds(400, 100, 171, 14);
         this.add(lblBeobachtungsstunde);
 
         bstunde = new JComboBox();
         bstunde.setModel(new DefaultComboBoxModel(Einstellungen.BEOBSTUNDEN));
-        bstunde.setBounds(35, 260, 171, 20);
+        bstunde.setBounds(400, 120, 171, 20);
         this.add(bstunde);
 
         JLabel lblBeobachter = new JLabel("Beobachter");
-        lblBeobachter.setBounds(35, 310, 84, 14);
+        lblBeobachter.setBounds(400, 170, 84, 14);
         this.add(lblBeobachter);
 
         beobachter = new JComboBox();
         beobachter.setModel(new DefaultComboBoxModel(Einstellungen.BEOBACHTER));
-        beobachter.setBounds(35, 330, 171, 20);
+        beobachter.setBounds(400, 190, 171, 20);
         this.add(beobachter);
+
+        /*unten*/
 
         btnStart = new JButton("Weiter");
         btnStart.setBounds(250, 400, 200, 50);
