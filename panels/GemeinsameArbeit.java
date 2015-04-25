@@ -4,10 +4,10 @@ import main.ObservationManager;
 
 import javax.swing.*;
 
-public class LehrerGeleitet extends AbstractCustomPanel
+public class GemeinsameArbeit extends AbstractCustomPanel
 {
 
-    public LehrerGeleitet(ObservationManager m)
+    public GemeinsameArbeit(ObservationManager m)
     {
 
         setLayout(null);
@@ -28,8 +28,8 @@ public class LehrerGeleitet extends AbstractCustomPanel
         btnGruppenarbeit.setBounds(100, 130, 250, 50);
         add(btnGruppenarbeit);
 
-        JButton btnKSprichtMit = new JButton("K spricht zu L");
-        btnKSprichtMit.setActionCommand("kil");
+        JButton btnKSprichtMit = new JButton("K spricht zu Erw");
+        btnKSprichtMit.setActionCommand("kl");
         btnKSprichtMit.addActionListener(m);
         btnKSprichtMit.setBounds(100, 240, 250, 50);
         add(btnKSprichtMit);
@@ -44,9 +44,9 @@ public class LehrerGeleitet extends AbstractCustomPanel
         btnLSprichtMit.addActionListener(m);
         add(btnLSprichtMit);
 
-        JButton btnLSprichtMit_1 = new JButton("L spricht zu K");
+        JButton btnLSprichtMit_1 = new JButton("Erw spricht zu K");
         btnLSprichtMit_1.setBounds(400, 240, 250, 50);
-        btnLSprichtMit_1.setActionCommand("lek");
+        btnLSprichtMit_1.setActionCommand("lk");
         btnLSprichtMit_1.addActionListener(m);
         add(btnLSprichtMit_1);
 

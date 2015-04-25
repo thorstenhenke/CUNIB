@@ -18,17 +18,17 @@ public class GesamteKlasse extends AbstractCustomPanel
         btnGruppenarbeit.setBounds(100, 30, 200, 50);
         add(btnGruppenarbeit);
 
-        JButton btnKSprichtMit = new JButton("K spricht zu L1");
-        btnKSprichtMit.setActionCommand("kl1");
+        JButton btnKSprichtMit = new JButton("K spricht zu Erw");
+        btnKSprichtMit.setActionCommand("kl");
         btnKSprichtMit.addActionListener(m);
         btnKSprichtMit.setBounds(100, 140, 200, 50);
         add(btnKSprichtMit);
 
-        JButton btnLSprichtMit = new JButton("K spricht zu L2");
+/*        JButton btnLSprichtMit = new JButton("K spricht zu L2");
         btnLSprichtMit.setBounds(100, 250, 200, 50);
         btnLSprichtMit.setActionCommand("kl2");
         btnLSprichtMit.addActionListener(m);
-        add(btnLSprichtMit);
+        add(btnLSprichtMit);*/
 
         JButton kak = new JButton("K spricht zu aK");
         kak.setBounds(100, 360, 200, 50);
@@ -47,17 +47,17 @@ public class GesamteKlasse extends AbstractCustomPanel
         btnGesamteKlasse.addActionListener(m);
         add(btnGesamteKlasse);
 
-        JButton btnLSprichtMit_1 = new JButton("L1 spricht zu K");
+        JButton btnLSprichtMit_1 = new JButton("Erw spricht zu K");
         btnLSprichtMit_1.setBounds(400, 140, 200, 50);
-        btnLSprichtMit_1.setActionCommand("l1k");
+        btnLSprichtMit_1.setActionCommand("lk");
         btnLSprichtMit_1.addActionListener(m);
         add(btnLSprichtMit_1);
 
-        JButton button = new JButton("L2 spricht zu K");
+/*        JButton button = new JButton("L2 spricht zu K");
         button.setBounds(400, 250, 200, 50);
         button.setActionCommand("l2k");
         button.addActionListener(m);
-        add(button);
+        add(button);*/
 
         JButton akk = new JButton("ak spricht zu K");
         akk.setBounds(400, 360, 200, 50);
