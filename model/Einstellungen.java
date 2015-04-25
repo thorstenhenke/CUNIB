@@ -12,11 +12,17 @@ public class Einstellungen
     public static final int MINSCODESTELLEN     = 1;
     public static final int MAXSCODESTELLEN     = 2;
     public static final int KCODESTELLEN        = 4;
+
     public static final String[] BEOBACHTER = {
             "", "Anja", "Anne", "Annelie", "Christian", "Jennifer", "Sabina", "Sophia", "Steffi", "Thorsten", "Ulrike"
     };
     public static final String[] UNTERRICHTSSTUNDEN = {
             "", "1. Stunde", "2. Stunde", "3. Stunde", "4. Stunde", "5. Stunde", "6. Stunde"
+    };
+
+    public static final String[] BEOBSTUNDEN = {
+            "", "1. Stunde", "2. Stunde", "3. Stunde", "4. Stunde", "5. Stunde", "6. Stunde", "7. Stunde", "8. Stunde",
+            "9. Stunde", "10. Stunde"
     };
 
     private Einstellungen() {}

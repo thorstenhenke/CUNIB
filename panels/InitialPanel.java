@@ -19,9 +19,9 @@ public class InitialPanel extends AbstractCustomPanel
 {
 
     private JTextField klnr;
-    private ButtonGroup bstunde;
     private ButtonGroup fach;
     private JComboBox sstunde;
+    private JComboBox bstunde;
     private JComboBox beobachter;
 
     private JButton btnStart;
@@ -69,17 +69,10 @@ public class InitialPanel extends AbstractCustomPanel
         lblBeobachtungsstunde.setBounds(35, 240, 171, 14);
         this.add(lblBeobachtungsstunde);
 
-        JRadioButton bstunde1 = new JRadioButton("1");
-        bstunde1.setBounds(35, 260, 100, 23);
-        this.add(bstunde1);
-
-        JRadioButton bstunde2 = new JRadioButton("2");
-        bstunde2.setBounds(135, 260, 100, 23);
-        this.add(bstunde2);
-
-        bstunde = new ButtonGroup();
-        bstunde.add(bstunde1);
-        bstunde.add(bstunde2);
+        bstunde = new JComboBox();
+        bstunde.setModel(new DefaultComboBoxModel(Einstellungen.BEOBSTUNDEN));
+        bstunde.setBounds(35, 260, 171, 20);
+        this.add(bstunde);
 
         JLabel lblBeobachter = new JLabel("Beobachter");
         lblBeobachter.setBounds(35, 310, 84, 14);
@@ -100,7 +93,7 @@ public class InitialPanel extends AbstractCustomPanel
     public Boolean inputIsValid()
     {
         return InputValidator.hasValidKCode(klnr.getText()) && InputValidator.hasValidRdBtn(fach)
-                && InputValidator.hasValidRdBtn(bstunde) && (beobachter.getSelectedIndex() != 0)
+                && (bstunde.getSelectedIndex() != 0) && (beobachter.getSelectedIndex() != 0)
                 && (sstunde.getSelectedIndex() != 0);
     }
 
@@ -111,7 +104,7 @@ public class InitialPanel extends AbstractCustomPanel
         HashMap <String, String> sessionInfo = new HashMap<String, String>();
         sessionInfo.put("Klassennummer", klnr.getText());
         sessionInfo.put("Beobachter", (String) beobachter.getSelectedItem());
-        sessionInfo.put("Beobachtungsstunde", InputConversion.getSelectedItem(bstunde));
+        sessionInfo.put("Beobachtungsstunde", (String) bstunde.getSelectedItem());
         sessionInfo.put("Fach", InputConversion.getSelectedItem(fach));
         sessionInfo.put("Schulstunde", (String) sstunde.getSelectedItem());
 
