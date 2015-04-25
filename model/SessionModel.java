@@ -30,6 +30,7 @@ public class SessionModel
         Speichern.saveString(this.toString());
     }
 
+    // vermutlich + 1
     public int anzahlGetesteterSchueler()
     {
         return arrschueler.length - limit;

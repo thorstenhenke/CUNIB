@@ -100,12 +100,37 @@ public class SessionManager implements ActionListener
 
     }
 
-    void zyklusAbgeschlossen()
-    {
-        if (gesamtdurchlauf < Einstellungen.MAKROZYKLUS) {
+    void resumeFromBreak(){
+        if (session.hasMoreSchueler()){
+            // einfach da weitermachen wo wir aufgehoert haben
+            observationManager.starteSchuelerZyklus();
+        } else {
+            // es muss ein neuer Zyklus gestartet werden
+            starteNeuenZyklus();
+            // TODO ist das wirklich so einafch an der Stelle? muss man nicht nochmal pruefen
+        }
+    }
+
+    boolean isTimeForBreak(){
+        if ((!session.hasMoreSchueler()) && (gesamtdurchlauf < Einstellungen.MAKROZYKLUS)){
+            return true;
+        } else if (session.anzahlGetesteterSchueler() == Einstellungen.PAUSE){
+            return true;
+        }
+        return false;
+    }
+
+    boolean isEnde(){
+        return (!session.hasMoreSchueler()) && (gesamtdurchlauf == Einstellungen.MAKROZYKLUS);
+    }
+
+    void schuelerIstAbgeschlossen(){
+        if (isEnde()){
+            fenster.showPanel(ende);
+        } else if (isTimeForBreak()){
             fenster.showPanel(helmke);
         } else {
-            fenster.showPanel(ende);
+            observationManager.starteSchuelerZyklus();
         }
     }
 
@@ -113,7 +138,7 @@ public class SessionManager implements ActionListener
     public void actionPerformed(ActionEvent e)
     {
         if (e.getActionCommand().equals("Pause::Weiter")) {
-            starteNeuenZyklus();
+            resumeFromBreak();
         } else if (e.getActionCommand().equals("StartPanel::Weiter")) {
             if (initialPanel.inputIsValid()){
                 fenster.showPanel(schuelerPanel);

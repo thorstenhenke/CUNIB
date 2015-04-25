@@ -69,7 +69,7 @@ public class ObservationManager implements ActionListener
 
     void starteSchuelerZyklus()
     {
-        SessionModel sm = sessionManager.session;
+        SessionModel sm = sessionManager.session; // singleton??
         aktuellerSchueler = sm.ziehe();
         fenster.updateSchuelerAnzahl(sm.anzahlGetesteterSchueler(), sm.arrschueler.length);
         fenster.updateSchuelerDaten(aktuellerSchueler);
@@ -115,20 +115,11 @@ public class ObservationManager implements ActionListener
 
     void beobachtungIstAbgeschlossen()
     {
+        aktuellerSchueler.addBeobachtung(decisionManager.getHistory());
         if (durchgaenge < Einstellungen.MIKROZYKLUS) {
-            aktuellerSchueler.addBeobachtung(decisionManager.getHistory());
             starteBeobachtungsZyklus();
         } else {
-            schuelerIstAbgeschlossen();
-        }
-    }
-
-    void schuelerIstAbgeschlossen()
-    {
-        if (sessionManager.session.hasMoreSchueler()) {
-            starteSchuelerZyklus();
-        } else {
-            sessionManager.zyklusAbgeschlossen();
+            sessionManager.schuelerIstAbgeschlossen();
         }
     }
 
