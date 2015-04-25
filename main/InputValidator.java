@@ -13,6 +13,16 @@ public class InputValidator
         return validateCode(klassencode, Einstellungen.KCODESTELLEN);
     }
 
+    public static boolean hasSCodes(String[] codes)
+    {
+        for (String code : codes){
+            if (!code.equals("")){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean hasValidSCodes(String[] codes)
     {
         for (String code : codes) {

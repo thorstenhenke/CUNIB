@@ -175,10 +175,11 @@ public class Schuelercodes extends AbstractCustomPanel
 
     public Boolean inputIsValid()
     {
-        return InputValidator.hasValidSCodes(new String[]{
+        String[] strCodes = new String[]{
                 scodeA.getText(), scodeB.getText(), scodeC.getText(), scodeD.getText(),
                 scodeE.getText(), scodeF.getText(), scodeG.getText(), scodeH.getText()
-                });
+                };
+        return InputValidator.hasSCodes(strCodes) && InputValidator.hasValidSCodes(strCodes);
     }
 
     public LinkedList getSchueler()
