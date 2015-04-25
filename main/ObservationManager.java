@@ -193,17 +193,12 @@ public class ObservationManager implements ActionListener
         decisionManager.addRelation(gemeinsam, "akk", interaktion);
         decisionManager.addRelation(gemeinsam, "kak", interaktion);
 
-        decisionManager.addRelation(erwachsener, "l1", interaktion);
-        decisionManager.addRelation(erwachsener, "l2", interaktion);
-        decisionManager.addRelation(erwachsener, "son", interaktion);
-        decisionManager.addRelation(erwachsener, "ein", interaktion);
+        decisionManager.addRelation(erwachsener, "*", interaktion);
 
-        decisionManager.addRelation(interaktion, "lan", qualitaet);
-        decisionManager.addRelation(interaktion, "kur", qualitaet);
+        decisionManager.addRelation(interaktion, "*", qualitaet);
 
-        decisionManager.addRelation(qualitaet, "nic", null);
-        decisionManager.addRelation(qualitaet, "hoc", null);
-        decisionManager.addRelation(qualitaet, "nor", null);
+        decisionManager.addRelation(qualitaet, "*", null);
+
 
         // TODO Unschoen! Besser nach oben
         decisionManager.setAsStart(inhalt);
