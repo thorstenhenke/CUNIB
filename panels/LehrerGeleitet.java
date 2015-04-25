@@ -29,7 +29,7 @@ public class LehrerGeleitet extends AbstractCustomPanel
         add(btnGruppenarbeit);
 
         JButton btnKSprichtMit = new JButton("K spricht zu L");
-        btnKSprichtMit.setActionCommand("ki1");
+        btnKSprichtMit.setActionCommand("kil");
         btnKSprichtMit.addActionListener(m);
         btnKSprichtMit.setBounds(100, 240, 250, 50);
         add(btnKSprichtMit);
