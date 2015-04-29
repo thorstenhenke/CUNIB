@@ -51,15 +51,17 @@ public class ObservationManager implements ActionListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                fenster.updateSekunden(zeit);
-                beobachtPanel.updateTime(zeit);
-                wartePanel.updateTime(zeit);
+                zeit--;
+
                 if (zeit == Einstellungen.LAENGEBEOBACHTUNG) {
                     fenster.showPanel(startPanel);
                 }
-                if (zeit > 0) {
-                    zeit--;
-                } else {
+
+                fenster.updateSekunden(zeit);
+                beobachtPanel.updateTime(zeit);
+                wartePanel.updateTime(zeit);
+
+                if (zeit <= 0) {
                     ((Timer) e.getSource()).stop();
                     zeitIstAbgelaufen();
                 }
