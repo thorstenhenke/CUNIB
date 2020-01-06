@@ -2,7 +2,7 @@ package model;
 
 public class Einstellungen
 {
-    public static final String KENNUNG          = "ib";
+    public static final String KENNUNG          = "ib-IR";
     public static final String EXTENSION        = ".txt";
 
     public static final int LAENGESESSION       = 45 * 60;
@@ -11,7 +11,7 @@ public class Einstellungen
 
     public static final int MIKROZYKLUS         = 8;
     public static final int MAKROZYKLUS         = 1;
-    public static final int PAUSE               = 4;
+    public static final int PAUSE               = 2;
 
     public static final int MINSCODESTELLEN     = 1;
     public static final int MAXSCODESTELLEN     = 2;

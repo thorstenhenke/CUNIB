@@ -51,13 +51,9 @@ public class SessionModel
 
     public SchuelerModel ziehe()
     {
-        int idx = (int) (Math.random() * limit);
-        SchuelerModel s = arrschueler[idx];
-
+        int idx = arrschueler.length - limit;
         limit--;
-        arrschueler[idx] = arrschueler[limit];
-        arrschueler[limit] = s;
-        return s;
+        return arrschueler[idx];
     }
 
     @Override

@@ -1,0 +1,6 @@
+1. Integrate src into main repo aka lift up
+2. Publish 3 branches: 
+    a. Field
+    b. Interrating
+    c. master that points to Field
+3. The rest should not be published on github
